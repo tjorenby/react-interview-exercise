@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #FFFFFF;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .cs-card {
+    -webkit-backdrop-filter: blur(10px) saturate(1.8);
+    backdrop-filter: blur(10px) saturate(1.8);
+    background-color: rgba(255, 255, 255, 0.8);  
+    border: 2px solid;
+  }
+
+  .cs-header {
+    -webkit-backdrop-filter: blur(10px) saturate(1.8);
+    backdrop-filter: blur(10px) saturate(1.8);
+    background-color: rgba(255, 255, 255, 0.8);  
+    //border-bottom: 2px solid var(--chakra-colors-brand-blue);
+  }
+}
+
+
+.cs-header {
+  position: fixed;
+  z-index: 1000;
+  img {
+    max-height: 100%;
+    padding: 1em;
+  }
+}
+
+.chakra-input {
+  background-color: white !important;
+}
+
+.cs-select {
+  max-width: 200px;
+  padding: 5px;
+  line-height: var(--chakra-lineHeights-normal);
+  font-size: var(--chakra-fontSizes-md);
+  padding-inline-start: var(--chakra-space-4);
+  padding-inline-end: 2rem;
+  height: var(--chakra-sizes-10);
+  border-radius: var(--chakra-radii-md);
+  outline: transparent solid 2px;
+  outline-offset: 2px;
+  border: 1px solid var(--chakra-colors-gray-200);
+}
+
+.header-img {
+  user-select: none;
+}
