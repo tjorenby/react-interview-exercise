@@ -48,6 +48,7 @@ const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
         <Controller
           name='district'
           control={control}
+          defaultValue={''}
           render={({ field }) => {
             return <Input {...field} />;
           }}
@@ -58,6 +59,7 @@ const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
         <Controller
           name='school'
           control={control}
+          defaultValue={''}
           render={({ field }) => {
             return <Input {...field} />;
           }}

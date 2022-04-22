@@ -18,27 +18,67 @@ import {
 } from '@chakra-ui/react';
 import { Card } from '@components/design/Card';
 import SearchContainer from './SearchContainer';
+import { ResultsByStateContainer } from './ResultsByStateContainer';
 
 export interface IState {
   handleSearching: (value: boolean) => void;
+  handleDistrictResults: (value: []) => void;
+  handleSchoolResults: (value: []) => void;
+  usState: {
+    name: string;
+    districts: [
+      district: {
+        city: string;
+        id: number;
+        leid: string;
+        name: string;
+        state: string;
+        street: string;
+        zip: string;
+      }
+    ];
+  };
 }
 
 const Home: React.FC = () => {
   const [searching, setSearching] = React.useState<boolean>(false);
+  const [districtResults, setDistrictResults] = React.useState<[]>([]);
+  const [schoolResults, setSchoolResults] = React.useState<[]>([]);
 
-  console.log('searching:', searching);
   const handleSearching = (value: boolean) => {
     setSearching(value);
   };
+
+  const handleDistrictResults = (value: []) => {
+    setDistrictResults(value);
+  };
+
+  const handleSchoolResults = (value: []) => {
+    setSchoolResults(value);
+  };
+
+  console.log('districtResults:', districtResults);
 
   return (
     <Center padding='100px' height='90vh'>
       <ScaleFade initialScale={0.9} in={true}>
         <Card variant='rounded' borderColor='blue'>
-          <SearchContainer handleSearching={handleSearching} />
+          <SearchContainer
+            handleSearching={handleSearching}
+            handleDistrictResults={handleDistrictResults}
+            handleSchoolResults={handleSchoolResults}
+          />
         </Card>
         <Card variant='rounded'>
-          {searching ? <Spinner /> : <div>Results</div>}
+          {searching ? (
+            <Spinner />
+          ) : (
+            <div>
+              {districtResults.map((usState) => {
+                return <ResultsByStateContainer usState={usState} />;
+              })}
+            </div>
+          )}
         </Card>
       </ScaleFade>
     </Center>
