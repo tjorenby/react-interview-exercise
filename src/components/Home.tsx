@@ -1,7 +1,9 @@
 import React from 'react';
 import {
   Button,
+  Box,
   Center,
+  Container,
   Heading,
   Text,
   Icon,
@@ -15,35 +17,82 @@ import {
   HStack,
   VStack,
   InputRightAddon,
+  Flex,
 } from '@chakra-ui/react';
-import { Card } from '@components/design/Card';
+import { Card } from './design';
 import SearchContainer from './SearchContainer';
 import { ResultsByStateContainer } from './ResultsByStateContainer';
+import { SelectedDistrictContainer } from './SelectedDistrictContainer';
+import { SelectedSchoolContainer } from './SelectedSchoolContainer';
 
 export interface IState {
   handleSearching: (value: boolean) => void;
   handleDistrictResults: (value: []) => void;
   handleSchoolResults: (value: []) => void;
-  usState: {
-    name: string;
-    districts: [
-      district: {
-        city: string;
-        id: number;
-        leid: string;
+  handleSelectedDistrict: (value: {}) => void;
+  handleSelectedSchool: (value: {}) => void;
+  resetResults: () => void;
+  districtResults: [
+    {
+      usState: {
         name: string;
-        state: string;
-        street: string;
-        zip: string;
-      }
-    ];
+        districts: [
+          district: {
+            city: string;
+            id: number;
+            leid: string;
+            name: string;
+            state: string;
+            street: string;
+            zip: string;
+          }
+        ];
+      };
+    }
+  ];
+
+  schoolResults: [
+    {
+      id: string;
+      name: string;
+      street: string;
+      city: string;
+      state: string;
+      zip: string;
+    }
+  ];
+  selectedDistrict: {
+    id: number;
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    leid: string;
+  };
+  selectedSchool: {
+    id: string;
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
   };
 }
 
 const Home: React.FC = () => {
   const [searching, setSearching] = React.useState<boolean>(false);
-  const [districtResults, setDistrictResults] = React.useState<[]>([]);
-  const [schoolResults, setSchoolResults] = React.useState<[]>([]);
+  const [districtResults, setDistrictResults] = React.useState<[]>();
+  const [schoolResults, setSchoolResults] = React.useState<[]>();
+  const [selectedDistrict, setSelectedDistrict] = React.useState<{}>();
+  const [selectedSchool, setSelectedSchool] = React.useState<{}>({});
+
+  const resetResults = () => {
+    setSelectedSchool({});
+    setSelectedDistrict({});
+    setSchoolResults([]);
+    setDistrictResults([]);
+  };
 
   const handleSearching = (value: boolean) => {
     setSearching(value);
@@ -57,30 +106,72 @@ const Home: React.FC = () => {
     setSchoolResults(value);
   };
 
-  console.log('districtResults:', districtResults);
+  const handleSelectedDistrict = (value: {}) => {
+    setSelectedSchool({});
+    setSchoolResults([]);
+    setSelectedDistrict(value);
+  };
+
+  const handleSelectedSchool = (value: {}) => {
+    setSelectedSchool(value);
+  };
 
   return (
-    <Center padding='100px' height='90vh'>
-      <ScaleFade initialScale={0.9} in={true}>
-        <Card variant='rounded' borderColor='blue'>
-          <SearchContainer
-            handleSearching={handleSearching}
-            handleDistrictResults={handleDistrictResults}
-            handleSchoolResults={handleSchoolResults}
-          />
-        </Card>
-        <Card variant='rounded'>
-          {searching ? (
-            <Spinner />
-          ) : (
-            <div>
-              {districtResults.map((usState) => {
-                return <ResultsByStateContainer usState={usState} />;
-              })}
-            </div>
-          )}
-        </Card>
-      </ScaleFade>
+    <Center padding='100px' h='100vh'>
+      <Container className='home-container' maxW='container.lg'>
+        <ScaleFade initialScale={0.9} in={true}>
+          <Card variant='rounded'>
+            <SearchContainer
+              handleSearching={handleSearching}
+              handleDistrictResults={handleDistrictResults}
+              handleSchoolResults={handleSchoolResults}
+              resetResults={resetResults}
+            />
+          </Card>
+          <Flex>
+            <Box w='400px'>
+              <Card variant='rounded'>
+                {searching ? (
+                  <Spinner />
+                ) : (
+                  <div>
+                    <Heading>Districts</Heading>
+                    <Box h='400px' overflow='auto'>
+                      {districtResults?.map((usState) => {
+                        return (
+                          <div key={usState.name}>
+                            <ResultsByStateContainer
+                              usState={usState}
+                              handleSelectedDistrict={handleSelectedDistrict}
+                              handleSchoolResults={handleSchoolResults}
+                            />
+                          </div>
+                        );
+                      })}
+                    </Box>
+                  </div>
+                )}
+              </Card>
+            </Box>
+            <Box w='600px'>
+              <Card variant='rounded' h='200px'>
+                <Box>
+                  <SelectedDistrictContainer
+                    selectedDistrict={selectedDistrict}
+                    schoolResults={schoolResults}
+                    handleSelectedSchool={handleSelectedSchool}
+                  />
+                </Box>
+              </Card>
+              <Card variant='rounded'>
+                <Box>
+                  <SelectedSchoolContainer selectedSchool={selectedSchool} />
+                </Box>
+              </Card>
+            </Box>
+          </Flex>
+        </ScaleFade>
+      </Container>
     </Center>
   );
 };

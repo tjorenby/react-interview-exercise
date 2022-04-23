@@ -1,4 +1,23 @@
 import React from 'react';
+import {
+  Button,
+  Box,
+  Center,
+  Heading,
+  Text,
+  Icon,
+  Input,
+  ScaleFade,
+  OrderedList,
+  Divider,
+  ListItem,
+  Spinner,
+  InputGroup, // Some Chakra components that might be usefull
+  HStack,
+  VStack,
+  InputRightAddon,
+  Flex,
+} from '@chakra-ui/react';
 import { SearchForm } from './SearchForm';
 import { IState as Props } from './Home';
 import { searchSchoolDistricts, searchSchools } from '@utils/nces';
@@ -8,6 +27,7 @@ interface IProps {
   handleSearching: Props['handleSearching'];
   handleDistrictResults: Props['handleDistrictResults'];
   handleSchoolResults: Props['handleSchoolResults'];
+  resetResults: Props['resetResults'];
 }
 
 export interface IState {
@@ -18,6 +38,7 @@ const SearchContainer: React.FC<IProps> = ({
   handleSearching,
   handleDistrictResults,
   handleSchoolResults,
+  resetResults,
 }) => {
   const usStates = Object.entries(US_STATE).map(([stateKey, stateValue]) => {
     return {
@@ -65,13 +86,13 @@ const SearchContainer: React.FC<IProps> = ({
       handleDistrictResults(resultsByState);
 
       handleSearching(false);
-      //setDistrictSearch(response);
     },
     [searchSchoolDistricts]
   );
 
   const onSubmit = React.useCallback(
     (values: object) => {
+      resetResults();
       handleSearching(true);
       const districtOnly = values.district && !values.school;
       const schoolOnly = values.school && !values.district;
@@ -82,11 +103,21 @@ const SearchContainer: React.FC<IProps> = ({
         console.log('query school only');
       }
     },
-    [handleSearching, getDistrictResults]
+    [resetResults, handleSearching, getDistrictResults]
   );
 
   return (
     <>
+      <Box display='flex' fontSize='48px'>
+        <Box>
+          <Text color='red' fontWeight='bold' mr='1' mb='2'>
+            School
+          </Text>
+        </Box>
+        <Box>
+          <Text>Finder</Text>
+        </Box>
+      </Box>
       <SearchForm onSubmit={onSubmit} />
     </>
   );

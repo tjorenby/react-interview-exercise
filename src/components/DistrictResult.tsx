@@ -15,16 +15,43 @@ import {
   InputRightAddon,
 } from '@chakra-ui/react';
 import { searchSchools } from '@utils/nces';
+import { IState as Props } from './Home';
 
-const DistrictResult: React.FC = ({ district }) => {
+interface IProps {
+  handleSchoolResults: Props['handleSchoolResults'];
+  handleSelectedDistrict: Props['handleSelectedDistrict'];
+}
+
+const DistrictResult: React.FC<IProps> = ({
+  district,
+  handleSchoolResults,
+  handleSelectedDistrict,
+}) => {
   const getSchoolResults = React.useCallback(async () => {
-    const schoolResponse = await searchSchools('k', district.leid);
-    console.log('schoolResponse:', schoolResponse);
+    const response = await searchSchools('k', district.leid);
+    //console.log('schoolResponse:', response);
+    const schoolObjects = response.map((school) => {
+      return {
+        id: school.LEAID,
+        name: school.NAME,
+        street: school.STREET,
+        city: school.CITY,
+        state: school.STATE,
+        zip: school.ZIP,
+      };
+    });
+
+    handleSchoolResults(schoolObjects);
   }, [searchSchools]);
+
+  const onSelect = React.useCallback(() => {
+    handleSelectedDistrict(district);
+    getSchoolResults();
+  }, [handleSelectedDistrict, getSchoolResults]);
 
   return (
     <>
-      <Text onClick={getSchoolResults}>{district.name}</Text>
+      <Text onClick={onSelect}>{district.name}</Text>
     </>
   );
 };

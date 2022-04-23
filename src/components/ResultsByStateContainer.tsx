@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  Box,
+  Flex,
   Button,
   Center,
   Heading,
@@ -15,26 +17,43 @@ import {
   InputRightAddon,
 } from '@chakra-ui/react';
 import { DistrictResult } from './DistrictResult';
+
 import { IState as Props } from './Home';
+import { stringify } from 'querystring';
 
 interface IProps {
   usState: Props['usState'];
+  handleSelectedDistrict: Props['handleSelectedDistrict'];
+  handleSchoolResults: Props['handleSchoolResults'];
 }
 
-const ResultsByStateContainer: React.FC<IProps> = ({ usState }) => {
-  return (
-    <>
-      <Heading>{usState.name}</Heading>
-      {usState.districts.map((district) => {
-        console.log('district:', district);
+export interface IState {}
 
-        return (
-          <div key={district.id}>
-            <DistrictResult district={district} />
-          </div>
-        );
-      })}
-    </>
+const ResultsByStateContainer: React.FC<IProps> = ({
+  usState,
+  handleSelectedDistrict,
+  handleSchoolResults,
+}) => {
+  return (
+    <Flex>
+      <Box>
+        <Text fontSize='3xl'>{usState.name}</Text>
+
+        <>
+          {usState.districts.map((district) => {
+            return (
+              <div key={district.id}>
+                <DistrictResult
+                  district={district}
+                  handleSchoolResults={handleSchoolResults}
+                  handleSelectedDistrict={handleSelectedDistrict}
+                />
+              </div>
+            );
+          })}
+        </>
+      </Box>
+    </Flex>
   );
 };
 

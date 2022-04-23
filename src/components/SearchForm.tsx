@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  Flex,
   Center,
   Heading,
   Text,
@@ -13,6 +14,7 @@ import {
   HStack,
   VStack,
   InputRightAddon,
+  Box,
 } from '@chakra-ui/react';
 import { IState as Props } from './SearchContainer';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
@@ -43,31 +45,42 @@ const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(formSubmitHandler)}>
-      <div>
-        <div>District</div>
-        <Controller
-          name='district'
-          control={control}
-          defaultValue={''}
-          render={({ field }) => {
-            return <Input {...field} />;
-          }}
-        />
-      </div>
-      <div>
-        <div>School</div>
-        <Controller
-          name='school'
-          control={control}
-          defaultValue={''}
-          render={({ field }) => {
-            return <Input {...field} />;
-          }}
-        />
-      </div>
-      <div>
-        <Button type='submit'>Search</Button>
-      </div>
+      <Flex>
+        <Center w='200px' h='40px'>
+          <Box>
+            <Text>District</Text>
+            <Controller
+              name='district'
+              control={control}
+              defaultValue={''}
+              render={({ field }) => {
+                return <Input {...field} />;
+              }}
+            />
+          </Box>
+        </Center>
+        <Center w='100px' h='40px'>
+          <Box pt='5'> - and / or - </Box>
+        </Center>
+        <Center w='200px' h='40px'>
+          <Box>
+            <Text>School</Text>
+            <Controller
+              name='school'
+              control={control}
+              defaultValue={''}
+              render={({ field }) => {
+                return <Input {...field} />;
+              }}
+            />
+          </Box>
+        </Center>
+        <Center w='100px' h='40px' mt='3' ml='2'>
+          <Button type='submit' color='white' variant='solid' colorScheme='red'>
+            Search
+          </Button>
+        </Center>
+      </Flex>
     </form>
   );
 };
