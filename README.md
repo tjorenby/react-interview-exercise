@@ -23,10 +23,10 @@ When building this app, my primary focus was to provide context around the searc
 
 - Allow users to search by School -or- District keywords. This would eliminate the requirement of having to know the associated District name.
 - Return more robust 'School' data to provide additional value to users.
-- Fix TypeScript errors
+- Fix TypeScript errors _(First experience with TypeScript!)_
 - Add responsive design elements for use on mobile devices
 - Refactor 'Home' component to reduce code length.
-- Evaluate use of Chakra UI components and improve on readibility as needed.
+- Evaluate use of Chakra UI components and improve on readibility as needed _(First experience with Chakra UI!)_
 - Add "eye candy" animations to transitions to be more in-line with the CharacterStrong website.
 
 ## Additional Dependencies
