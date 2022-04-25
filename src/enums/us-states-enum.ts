@@ -200,4 +200,5 @@ const US_STATE = Object.seal({
     abbreviation: 'WY',
   },
 });
+
 export { US_STATE };

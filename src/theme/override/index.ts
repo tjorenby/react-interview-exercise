@@ -1,5 +1,3 @@
-import {Button} from "./Button";
-import {Input} from './Input';
-
-
-export {Button, Input};
+//Update export structure to follow pattern for index files
+export * from './Button';
+export * from './Input';

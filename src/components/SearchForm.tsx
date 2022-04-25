@@ -1,23 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Flex,
-  Center,
-  Heading,
-  Text,
-  Icon,
-  Input,
-  ScaleFade,
-  OrderedList,
-  Divider,
-  ListItem,
-  HStack,
-  VStack,
-  InputRightAddon,
-  Box,
-} from '@chakra-ui/react';
-import { IState as Props } from './SearchContainer';
+import { Button, Flex, Center, Input, Box } from '@chakra-ui/react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { IState as Props } from './SearchContainer';
 
 interface IProps {
   onSubmit: Props['onSubmit'];
@@ -25,17 +9,17 @@ interface IProps {
 
 interface IFormInputs {
   district: string;
-  school: string;
 }
 
+//using React Hook Form for ease of validation and scalability.
 const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
   const {
     control,
-    register,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IFormInputs>();
+    formState: { isValid },
+  } = useForm<IFormInputs>({
+    mode: 'onChange',
+  });
 
   const formSubmitHandler: SubmitHandler<IFormInputs> = (
     values: IFormInputs
@@ -45,40 +29,31 @@ const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(formSubmitHandler)}>
-      <Flex>
-        <Center w='200px' h='40px'>
-          <Box>
-            <Text>District</Text>
+      <Flex h='40px' align='center'>
+        <Center>
+          <Box w='400px'>
             <Controller
               name='district'
               control={control}
               defaultValue={''}
+              rules={{ required: true }}
               render={({ field }) => {
-                return <Input {...field} />;
+                return <Input {...field} placeholder='Enter District...' />;
               }}
             />
           </Box>
-        </Center>
-        <Center w='100px' h='40px'>
-          <Box pt='5'> - and / or - </Box>
-        </Center>
-        <Center w='200px' h='40px'>
-          <Box>
-            <Text>School</Text>
-            <Controller
-              name='school'
-              control={control}
-              defaultValue={''}
-              render={({ field }) => {
-                return <Input {...field} />;
-              }}
-            />
+
+          <Box ml='4'>
+            <Button
+              type='submit'
+              color='white'
+              variant='solid'
+              bg='brand.red'
+              disabled={!isValid}
+            >
+              Search
+            </Button>
           </Box>
-        </Center>
-        <Center w='100px' h='40px' mt='3' ml='2'>
-          <Button type='submit' color='white' variant='solid' colorScheme='red'>
-            Search
-          </Button>
         </Center>
       </Flex>
     </form>

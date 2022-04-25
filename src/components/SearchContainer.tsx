@@ -1,43 +1,25 @@
 import React from 'react';
-import {
-  Button,
-  Box,
-  Center,
-  Heading,
-  Text,
-  Icon,
-  Input,
-  ScaleFade,
-  OrderedList,
-  Divider,
-  ListItem,
-  Spinner,
-  InputGroup, // Some Chakra components that might be usefull
-  HStack,
-  VStack,
-  InputRightAddon,
-  Flex,
-} from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { SearchForm } from './SearchForm';
-import { IState as Props } from './Home';
-import { searchSchoolDistricts, searchSchools } from '@utils/nces';
+import { searchSchoolDistricts } from '@utils/nces';
 import { US_STATE } from '../enums';
+import { IState as Props } from './Home';
 
 interface IProps {
   handleSearching: Props['handleSearching'];
   handleDistrictResults: Props['handleDistrictResults'];
-  handleSchoolResults: Props['handleSchoolResults'];
+  handleSelectedDistrict: Props['handleSelectedDistrict'];
   resetResults: Props['resetResults'];
 }
 
 export interface IState {
-  onSubmit: (value: object) => void;
+  onSubmit: (value: { district: string }) => void;
 }
 
 const SearchContainer: React.FC<IProps> = ({
   handleSearching,
   handleDistrictResults,
-  handleSchoolResults,
+  handleSelectedDistrict,
   resetResults,
 }) => {
   const usStates = Object.entries(US_STATE).map(([stateKey, stateValue]) => {
@@ -47,19 +29,11 @@ const SearchContainer: React.FC<IProps> = ({
     };
   });
 
-  const getSchoolResults = React.useCallback(
-    async (districts: []) => {
-      console.log('districts in getSchool:', districts);
-      const schoolResponse = await searchSchools('k', districts[1].LEAID);
-      console.log('schoolResponse:', schoolResponse);
-    },
-    [searchSchools]
-  );
-
   const getDistrictResults = React.useCallback(
     async (value: string) => {
       const response = await searchSchoolDistricts(value);
 
+      //Grab pertinent-fields-only
       const districtObjects = response.map((district) => {
         return {
           id: district.OBJECTID,
@@ -72,6 +46,7 @@ const SearchContainer: React.FC<IProps> = ({
         };
       });
 
+      // Sort results by US State in order to provide context for user
       const resultsByState = usStates
         .map((usState) => {
           return {
@@ -85,41 +60,49 @@ const SearchContainer: React.FC<IProps> = ({
 
       handleDistrictResults(resultsByState);
 
+      if (resultsByState.length > 0) {
+        //Set a default selection on component load.
+        const defaultSelection = resultsByState[0].districts[0];
+        handleSelectedDistrict(defaultSelection);
+      }
+
       handleSearching(false);
     },
-    [searchSchoolDistricts]
+    [
+      searchSchoolDistricts,
+      handleSearching,
+      handleDistrictResults,
+      handleSelectedDistrict,
+    ]
   );
 
   const onSubmit = React.useCallback(
-    (values: object) => {
+    (values: { district: string }) => {
       resetResults();
       handleSearching(true);
-      const districtOnly = values.district && !values.school;
-      const schoolOnly = values.school && !values.district;
-
-      if (districtOnly) {
-        getDistrictResults(values.district);
-      } else if (schoolOnly) {
-        console.log('query school only');
-      }
+      getDistrictResults(values.district);
     },
     [resetResults, handleSearching, getDistrictResults]
   );
 
   return (
-    <>
-      <Box display='flex' fontSize='48px'>
-        <Box>
-          <Text color='red' fontWeight='bold' mr='1' mb='2'>
-            School
-          </Text>
+    <Box>
+      <Center>
+        <Box display='flex' fontSize='48px'>
+          <Box>
+            <Text color='brand.red' fontWeight='bold' mr='1' mb='2'>
+              School
+            </Text>
+          </Box>
+          <Box>
+            <Text>Finder</Text>
+          </Box>
         </Box>
-        <Box>
-          <Text>Finder</Text>
-        </Box>
-      </Box>
-      <SearchForm onSubmit={onSubmit} />
-    </>
+      </Center>
+      <Center>
+        <SearchForm onSubmit={onSubmit} />
+      </Center>
+    </Box>
   );
 };
 
