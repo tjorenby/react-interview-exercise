@@ -1,7 +1,10 @@
 {
+  "homepage": "https://tjorenby.github.io/react-interview-exercise",
   "name": "characterstrong-developer-interview-react-app",
   "version": "0.0.0",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
@@ -23,6 +26,7 @@
     "@types/react-dom": "^17.0.0",
     "@vitejs/plugin-react": "^1.0.0",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.2.3",
     "typescript": "^4.3.2",
     "vite": "^2.6.4"
   }

@@ -6,7 +6,7 @@ import * as overrides from '@theme/override';
 //moved out of 'index.ts' in order to standardize the use of index files across code base
 const colors = {
   brand: {
-    green: '#71CE7E',
+    green: '#42E794',
     lightGreen: '#B6E3D4',
     darkGreen: '#1E7B75',
     red: '#FF4658',
