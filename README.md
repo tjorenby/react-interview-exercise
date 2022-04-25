@@ -6,6 +6,17 @@ This app was designed to allow users to search for public and private schools wi
 
 ---
 
+## Demo
+
+![demo] (./school-finder-demo.gif)
+
+## Install
+
+To run this application:
+
+- run `npm install` from the project root directory
+- run `npm run dev` to launch the React app
+
 ## Considerations
 
 When building this app, my primary focus was to provide context around the search results. By limiting search functionality to District-only, a natural "path" was developed for users to comfortably and quickly navigate to their desired District / School. Strong emphasis was put on scalability, readability, and reusabiity when creating the component structure.
@@ -26,6 +37,6 @@ When building this app, my primary focus was to provide context around the searc
 
 ## Additional Dependencies
 
-[React Hook Form] (https://react-hook-form.com/)
-[React Select] (https://react-select.com/home)
-[File Loader] (https://www.npmjs.com/package/file-loader)
+- [React Hook Form] (https://react-hook-form.com/)
+- [React Select] (https://react-select.com/home)
+- [File Loader] (https://www.npmjs.com/package/file-loader)

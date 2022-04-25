@@ -38,7 +38,12 @@ const SearchForm: React.FC<IProps> = ({ onSubmit }) => {
               defaultValue={''}
               rules={{ required: true }}
               render={({ field }) => {
-                return <Input {...field} placeholder='Enter District...' />;
+                return (
+                  <Input
+                    {...field}
+                    placeholder='Enter District or Keyword...'
+                  />
+                );
               }}
             />
           </Box>
