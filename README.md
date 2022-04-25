@@ -6,7 +6,7 @@ This app was designed to allow users to search for public and private schools wi
 
 ## Demo
 
-<img src="./school-finder-demo" alt="demo" style="width: 100%">
+<img src="./school-finder-demo.gif" alt="demo" style="width: 100%">
 
 ## Install
 
